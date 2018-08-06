@@ -1,0 +1,34 @@
+version: '3'
+
+#
+# Create a group of services runnning on the same overlay network. 
+# Test1 - See whether each service can see each other by connecting to each service and looking up the others.
+#       - Results. Containers can all see each other using both the service name 'test-net01' or with the service prefix, in my case 'jon_test-net01'
+# Test2 - Prevent containers from accessing the internet by redirecting the gateway to a non existant IP addr
+# Test3 - Use an environment variable to prefix the network to test user isolation
+#       - Results. Added $(USER) to the name of the network.
+# 
+#
+services:
+  test-net01:
+    image: busybox
+    command: /bin/top
+    networks:
+      - testnetwork
+
+  test-net02:
+    image: busybox
+    command: /bin/top
+    networks:
+      - testnetwork
+
+  test-net03:
+    image: busybox
+    command: /bin/top
+    networks:
+      - testnetwork
+
+networks:
+  testnetwork:
+    driver: overlay
+
